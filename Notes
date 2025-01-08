@@ -1,0 +1,5 @@
+21 Dec, 2024
+------------
+
+* Installed `pdm` for package management.
+* Provided a `init.sh` to install `pdm` if not present in the system.

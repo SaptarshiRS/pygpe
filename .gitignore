@@ -1,0 +1,8 @@
+# Package manager
+uv/
+uv.lock
+pyproject.toml
+
+# Notebooks
+*.ipynb
+
