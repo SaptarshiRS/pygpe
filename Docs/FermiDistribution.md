@@ -15,7 +15,6 @@ kernelspec:
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-import sys; sys.path.insert(0, "..")
 ```
 
 ## Fermi Dirac distribution
@@ -36,7 +35,7 @@ Classical particles which are indistinguishable, non-interacting, non-relativist
 \end{equation}
 
 ```{code-cell} ipython3
-from src import fermi
+import fermi
 
 es = np.linspace(-1, 1, 30)
 Ts = np.linspace(0.01, 1, 30)

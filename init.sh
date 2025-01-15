@@ -25,6 +25,9 @@ function clean()
       rm -r src/$env_name.egg-info/
     fi
   fi
+  # Python cache
+  [ -d src/__pycache__ ] && rm -r src/__pycache__
+  # Deactivate virtual environment
   if [ ! -z $VIRTUAL_ENV ]
   then
     unset VIRTUAL_ENV
@@ -77,6 +80,9 @@ function main()
   # Create virtual environment
   echo "Creating the virtual environment"
   $uv_bin venv
+
+  # Append PYTHONPATH
+  echo -e "\nexport PYTHONPATH=$(pwd)/src" >> $env_dir/bin/activate
 
   # Activate the virtual environment
   if [ ! -z "$VIRTUAL_ENV" ]
