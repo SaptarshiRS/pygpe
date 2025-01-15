@@ -6,3 +6,5 @@ pyproject.toml
 # Notebooks
 *.ipynb
 
+# Python cache
+*/__pycache__/

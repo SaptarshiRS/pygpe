@@ -90,6 +90,7 @@ function main()
   #-----------------------------Install packages---------------------------------
 
   # Packages to be installed (including dependencies):
+  # scikit-learn
   # ruff
   # matplotlib
   # scipy
@@ -97,6 +98,7 @@ function main()
   # notebook (jupyter, ipykernel, etc)
 
   $uv_bin add \
+    scikit-learn \
     ruff \
     matplotlib \
     scipy \

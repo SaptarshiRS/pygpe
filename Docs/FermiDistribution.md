@@ -15,9 +15,7 @@ kernelspec:
 ```{code-cell} ipython3
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from matplotlib.tri import Triangulation
-from mpl_toolkits.mplot3d import Axes3D
+import sys; sys.path.insert(0, "..")
 ```
 
 ## Fermi Dirac distribution
@@ -38,86 +36,12 @@ Classical particles which are indistinguishable, non-interacting, non-relativist
 \end{equation}
 
 ```{code-cell} ipython3
-def fermi(e, T, mu=0.1, kB=1):
-    return 1 / (np.exp((e - mu) / (kB * T)) + 1)
+from src import fermi
 
-def bose(e, T, mu=0.1, kB=1):
-    return 1 / (np.exp((e - mu) / (kB * T)) - 1)
- 
-def maxwell(e, T, mu=0.1, kB=1):
-    return 1 / (np.exp((e - mu) / (kB * T)))
- 
-e_ = np.linspace(-1, 1, 50)
-T_ = np.linspace(0.01, 1, 50)
-e, T = np.meshgrid(e_, T_)
-T2d = 0.01
- 
-tri = Triangulation(e.ravel(), T.ravel())
+es = np.linspace(-1, 1, 30)
+Ts = np.linspace(0.01, 1, 30)
 
-fig = plt.figure(figsize=(18, 10))
-gs = GridSpec(2, 3, figure=fig)
-
-# Fermions
-fT = fermi(e=e_, T=T2d)
-ax = fig.add_subplot(gs[0, 0])
-ax.plot(e_, fT)
-
-ax.set_title('Fermi-Dirac Distribution function', fontsize=14)
-ax.set_xlabel(r'$\epsilon$', fontsize=12)
-ax.set_ylabel('f', fontsize=12)
-
-Z = fermi(e, T)
-ax = fig.add_subplot(gs[1, 0], projection='3d')
-ax.plot_trisurf(tri, Z.ravel(), cmap='autumn', edgecolor='none')
- 
-ax.set_title('Fermi-Dirac Distribution function', fontsize=14)
-ax.set_xlabel(r'$\epsilon$', fontsize=12)
-ax.set_ylabel('T', fontsize=12)
-ax.set_zlabel('f', fontsize=12)
-
-# Bosons
-bT = bose(e=e_, T=T2d)
-ax = fig.add_subplot(gs[0, 1])
-ax.plot(e_, bT)
-
-ax.set_title('Bose-Einstein Distribution function', fontsize=14)
-ax.set_xlabel(r'$\epsilon$', fontsize=12)
-ax.set_ylabel('f', fontsize=12)
-
-Z = bose(e, T)
-ax = fig.add_subplot(gs[1, 1], projection='3d')
-
-ax.plot_trisurf(tri, Z.ravel(), cmap='autumn', edgecolor='none')
- 
-ax.set_title('Bose-Einstein Distribution function', fontsize=14)
-ax.set_xlabel(r'$\epsilon$', fontsize=12)
-ax.set_ylabel('T', fontsize=12)
-ax.set_zlabel('f', fontsize=12)
- 
-# Maxwell
-mT = maxwell(e=e_, T=T2d)
-ax = fig.add_subplot(gs[0, 2])
-ax.plot(e_, mT)
-
-ax.set_title('Maxwell-Boltzmann Distribution function', fontsize=14)
-ax.set_xlabel(r'$\epsilon$', fontsize=12)
-ax.set_ylabel('f', fontsize=12)
-
-Z = maxwell(e, T)
-ax = fig.add_subplot(gs[1, 2], projection='3d')
-
-ax.plot_trisurf(tri, Z.ravel(), cmap='autumn', edgecolor='none')
- 
-ax.set_title('Maxwell-Boltzmann Distribution function', fontsize=14)
-ax.set_xlabel(r'$\epsilon$', fontsize=12)
-ax.set_ylabel('T', fontsize=12)
-ax.set_zlabel('f', fontsize=12)
- 
-plt.show()
-```
-
-```{code-cell} ipython3
-
+fermi.plot_3d_slice(es, Ts)
 ```
 
 ```{code-cell} ipython3
