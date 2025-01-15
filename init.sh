@@ -47,19 +47,8 @@ function vcs()
   echo -e "# Notebooks\n*.ipynb\n" >> .gitignore
 }
 
-function main()
+function uv()
 {
-  while getopts "c" arg
-  do
-    case "${arg}" in
-      c)
-        clean
-        ;;
-      *) echo "Invalid option";;
-    esac
-    return 0
-  done
-
   # Install uv
   if [ -f $uv_bin ]
   then
@@ -76,7 +65,29 @@ function main()
 
   # Initialize git repository
   [ ! -d .git/ ] && vcs
+}
 
+function packages()
+{
+  # Packages to be installed (including dependencies):
+  # scikit-learn
+  # ruff
+  # matplotlib
+  # scipy
+  # jupytext
+  # notebook (jupyter, ipykernel, etc)
+
+  $uv_bin add \
+    scikit-learn \
+    ruff \
+    matplotlib \
+    scipy \
+    jupytext \
+    notebook
+}
+
+function venv()
+{
   # Create virtual environment
   echo "Creating the virtual environment"
   $uv_bin venv
@@ -93,27 +104,32 @@ function main()
   echo "Activating virtual environment"
   source $env_dir/bin/activate
 
-  #-----------------------------Install packages---------------------------------
-
-  # Packages to be installed (including dependencies):
-  # scikit-learn
-  # ruff
-  # matplotlib
-  # scipy
-  # jupytext
-  # notebook (jupyter, ipykernel, etc)
-
-  $uv_bin add \
-    scikit-learn \
-    ruff \
-    matplotlib \
-    scipy \
-    jupytext \
-    notebook
+  # Install packages
+  packages
 
   # Add environment
   echo "Adding environment to jupyter kernels"
   python -m ipykernel install --prefix=$env_dir --name $env_name
+}
+
+function main()
+{
+  while getopts "c" arg
+  do
+    case "${arg}" in
+      c)
+        clean
+        ;;
+      *) echo "Invalid option";;
+    esac
+    return 0
+  done
+
+  # Initialize uv and git
+  uv
+
+  # Create virtual environment
+  venv
 }
 
 main "$@"
