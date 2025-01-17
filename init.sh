@@ -9,6 +9,9 @@ env_name=$(basename $(pwd))
 
 function clean()
 {
+  # Sphinx directories
+  (cd docs && make clean)
+
   echo "Cleaning project"
   # Package manager
   [ -d uv/ ] && rm -r uv/ uv.lock
@@ -75,6 +78,7 @@ function packages()
   # matplotlib
   # scipy
   # jupytext
+  # sphinx, myst-nb
   # notebook (jupyter, ipykernel, etc)
 
   $uv_bin add \
@@ -83,6 +87,7 @@ function packages()
     matplotlib \
     scipy \
     jupytext \
+    sphinx myst-nb \
     notebook
 }
 
@@ -133,4 +138,3 @@ function main()
 }
 
 main "$@"
-

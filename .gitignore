@@ -8,3 +8,8 @@ pyproject.toml
 
 # Python cache
 */__pycache__/
+
+# Sphinx buils
+docs/_build/
+docs/_static/
+docs/_templates/
