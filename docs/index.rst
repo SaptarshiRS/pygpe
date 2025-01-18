@@ -15,4 +15,5 @@ documentation for details.
    :maxdepth: 2
    :caption: Contents:
 
-   FermiDistribution.md
+   Notes/FermiDistribution.md
+   Notes/MonteCarlo.md
