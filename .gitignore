@@ -5,6 +5,7 @@ pyproject.toml
 
 # Notebooks
 *.ipynb
+docs/Notes/.ipynb_checkpoints/
 
 # Python cache
 */__pycache__/

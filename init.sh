@@ -80,6 +80,7 @@ function packages()
   # jupytext
   # sphinx, myst-nb
   # notebook (jupyter, ipykernel, etc)
+  # ipywidgets
 
   $uv_bin add \
     scikit-learn \
@@ -88,7 +89,8 @@ function packages()
     scipy \
     jupytext \
     sphinx myst-nb \
-    notebook
+    notebook \
+    ipywidgets
 }
 
 function venv()
