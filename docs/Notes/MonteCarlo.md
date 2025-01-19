@@ -53,15 +53,40 @@ interact(f, N=IntSlider(min=1, max=2000, step=20, value=1000));
 
 The function `integrate_circle()` returns the absolute difference of $\pi r^2$ from the result that we got from the Monte-Carlo integration. The accuracy of this integration technique increases with the number of sampling points and I wanted to check how it relates to increasing the points.
 
-So, I picked a range $\left(1, 10^6\right)$ and plotted how this error decreases with increasing number of points. It is important to note that there are local fluctuations arise from two main reasons. Firstly, because of how coarsely I binned this range. Here I am taking a total of 100 points spread logarihmically over the range and increasing the granularity would make the trend smoother. Secondly, since the points are chosen at random, sometimes the points can be clustered inside the zone of interest and vice-versa thereby causing the fluctuation.
+So, I picked a range $\left(1, 10^7\right)$ and plotted how this error decreases with increasing number of points. It is important to note that there are local fluctuations arise from two main reasons. Firstly, because of how coarsely I binned this range. Here I am taking a total of 100 points spread logarihmically over the range and increasing the granularity would make the trend smoother. Secondly, since the points are chosen at random, sometimes the points can be clustered inside the zone of interest and vice-versa thereby causing the fluctuation.
 
 ```{code-cell} ipython3
-Ns = np.logspace(start=0, stop=6, base=10, num=100, dtype=np.int64)
+%autoreload
+from monte import integrate_circle
+
+Ns = np.logspace(start=0, stop=7, base=10, num=100, dtype=np.int64)
 ys = list(map(integrate_circle, Ns))
 
 fig, ax = plt.subplots(1, 1, figsize=(5, 5))
 ax.loglog(Ns, ys)
 ax.set(xlabel="Samples", ylabel="Error", title="Error scaling");
+```
+
+## Multiple measurements
+
+In order to check if running multiple measurements reduces the error by averaing over the results, I am restricting the range to $\left(10, 10^4\right)$ for ease of calculations. I will change the seed of the random number generator as a means of simulating multiple measurements, although there are more practically sound ways of doing this when verifying actual experiments (introducing random noise, for example).
+
+As we can see that the more number of measurements that we perform, irrespective of the number of sample points used for the Monte Carlo integration, the averaged result would fluctuate less and the errors would also reduce.
+
+```{code-cell} ipython3
+%autoreload
+from monte import err_stat
+
+Nseeds = [2, 10, 50, 250,]
+Ns = np.logspace(start=1, stop=4, base=10, num=40, dtype=np.int64)
+
+fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+for Nseeds in Nseeds:
+    means, stds = err_stat(Nseeds=Nseeds, Ns=Ns)
+    ax.errorbar(Ns, means, yerr=stds, label=f"{Nseeds} trials")
+ax.set(xscale="log", yscale="log",
+       xlabel="Samples", ylabel="Averaged Error", title="Statistical reduction of error")
+ax.legend();
 ```
 
 ```{code-cell} ipython3

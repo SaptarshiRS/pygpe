@@ -1,3 +1,4 @@
+from functools import partial
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
@@ -31,3 +32,27 @@ def integrate_circle(N=100, r=1, seed=1, disp=False):
         fig.colorbar(ScalarMappable(cmap=cmap, norm=norm), ax=ax)
 
     return abs((np.pi * r ** 2) - integral)
+
+def err_stat(Nseeds, Ns, start=0, stop=4):
+    """Return the avg & std for Nseeds with Ns different point calculations,
+    spread evenly over the log scale.
+    Attributes:
+    -----------
+    Nseeds: int
+        Number of seeds to average over.
+    Ns: int
+        Number of different sample points in log scale.
+    start: int
+        Start range for sample points = 10^(start).
+    stop: int
+        Start range for sample points = 10^(stop).
+    """
+    seeds = np.arange(1, Nseeds+1)
+    partial_circles = list(map(lambda x: partial(integrate_circle, 
+                                                 seed=x), seeds))
+
+    errs = np.asarray([list(map(f, Ns)) for f in partial_circles])
+
+    means = np.mean(errs, axis=0)
+    stds = np.std(errs, axis=0)
+    return (means, stds)
